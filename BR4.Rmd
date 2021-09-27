@@ -1,0 +1,397 @@
+---
+title: "BR 4"
+author: "Steph Jordan"
+output:
+  html_document:
+    df_print: paged
+---
+```{r}
+library(bayesrules)
+library(tidyverse)
+```
+
+## Exercise 4.1
+
+a. centering pi on 0.5
+b. somewhat favoring pi>0.5
+c. strongly favoring pi<0.5
+d. somewhat favoring pi<0.5
+e. strongly favoring pi>0.5
+
+## Exercise 4.2
+E must have generated this plot. Since the prior is left skewed, we know alpha<beta, and since the likelihood is symmetrical, we know y/n=1/2. The only input sequence that fits this description is E. 
+
+## Exercise 4.3
+
+a. Beta(1, 5)
+b. Beta(1, 1)
+c. Beta(5, 1)
+d. Beta(4, 3)
+e. Beta(2, 4)
+
+## Exercise 4.4
+
+a. Kimya's prior is a downward sloping linear curve with a mode of 0, and a mean around 1/3.
+
+```{r}
+plot_beta(1, 2)
+```
+
+b. Fernando's model is highly left skewed, with a minimal amount of variation. It has a mean and mode close to 0. 
+
+```{r}
+plot_beta(0.5, 1)
+```
+
+c. Ciara's model is also strongly left-skewed, but with a greater degree of variability. Her mean and mode are also higher (closer to 0.15).
+
+```{r}
+plot_beta(3, 10)
+```
+
+d. Taylor's model is right-skewed, with a low degree of variability. It has a mean and mode close to 1. 
+
+```{r}
+plot_beta(2, 0.1)
+```
+
+## Exercise 4.5
+a. Simulating the posterior model for Kimya.
+
+```{r}
+set.seed(84735)
+kimya_sim <- data.frame(pi = rbeta(10000, 1, 2)) %>% 
+  mutate(y = rbinom(10000, size = 7, prob = pi))
+```
+
+Plotting simulation results
+```{r}
+ggplot(kimya_sim, aes(x = pi, y = y)) + 
+  geom_point(aes(color = (y == 3)), size = 0.1)
+```
+
+Filtering for only the data that matches our observed results
+```{r}
+# Keep only the simulated pairs that match our data
+kimya_posterior <- kimya_sim %>% 
+  filter(y == 3)
+
+# Plot the remaining pi values
+ggplot(kimya_posterior, aes(x = pi)) + 
+  geom_density()
+```
+
+Calculating mean pi value for y==3.
+```{r}
+kimya_posterior %>% 
+  summarize(mean(pi), sd(pi))
+
+```
+b. Simulating the posterior model for Fernando
+```{r}
+set.seed(84735)
+fernando_sim <- data.frame(pi = rbeta(10000, 0.5, 1)) %>% 
+  mutate(y = rbinom(10000, size = 7, prob = pi))
+```
+
+Plotting simulation results
+```{r}
+ggplot(fernando_sim, aes(x = pi, y = y)) + 
+  geom_point(aes(color = (y == 3)), size = 0.1)
+```
+
+Filtering for only the data that matches our observed results
+```{r}
+# Keep only the simulated pairs that match our data
+fernando_posterior <- fernando_sim %>% 
+  filter(y == 3)
+
+# Plot the remaining pi values
+ggplot(fernando_posterior, aes(x = pi)) + 
+  geom_density()
+```
+
+Calculating mean pi value for y==3.
+```{r}
+fernando_posterior %>% 
+  summarize(mean(pi), sd(pi))
+
+```
+
+c. Simulating the posterior model for Ciara
+```{r}
+set.seed(84735)
+ciara_sim <- data.frame(pi = rbeta(10000, 3, 10)) %>% 
+  mutate(y = rbinom(10000, size = 7, prob = pi))
+```
+
+Plotting simulation results
+```{r}
+ggplot(ciara_sim, aes(x = pi, y = y)) + 
+  geom_point(aes(color = (y == 3)), size = 0.1)
+```
+
+Filtering for only the data that matches our observed results
+```{r}
+# Keep only the simulated pairs that match our data
+ciara_posterior <- ciara_sim %>% 
+  filter(y == 3)
+
+# Plot the remaining pi values
+ggplot(ciara_posterior, aes(x = pi)) + 
+  geom_density()
+```
+
+Calculating mean pi value for y==3.
+```{r}
+ciara_posterior %>% 
+  summarize(mean(pi), sd(pi))
+
+```
+d. Simulating the posterior model for Taylor
+```{r}
+set.seed(84735)
+taylor_sim <- data.frame(pi = rbeta(10000, 2, 0.1)) %>% 
+  mutate(y = rbinom(10000, size = 7, prob = pi))
+```
+
+Plotting simulation results
+```{r}
+ggplot(taylor_sim, aes(x = pi, y = y)) + 
+  geom_point(aes(color = (y == 3)), size = 0.1)
+```
+
+Filtering for only the data that matches our observed results
+```{r}
+# Keep only the simulated pairs that match our data
+taylor_posterior <- taylor_sim %>% 
+  filter(y == 3)
+
+# Plot the remaining pi values
+ggplot(taylor_posterior, aes(x = pi)) + 
+  geom_density()
+```
+
+Calculating mean pi value for y==3.
+```{r}
+taylor_posterior %>% 
+  summarize(mean(pi), sd(pi))
+
+```
+
+## Exercise 4.6
+
+a. Calculating Kimya's posterior model
+```{r}
+summarize_beta_binomial(1, 2, 3, 7)
+```
+Therefore, the posterior model is $$ Beta(4, 6)$$ 
+
+The mean is slightly less in the exact calculation than in the simulation. The exact calculation yields a slightly lower variability (0.148) than the simulation (0.15).
+
+b. Calculating Fernando's posterior model
+```{r}
+summarize_beta_binomial(0.5, 1, 3, 7)
+```
+Therefore, the posterior model is $$ Beta(3.5, 5)$$ 
+
+The means are *very* similar in the simulation and the exact model. The exact calculation yields a slightly lower variability (0.1597) than the simulation (0.165).
+
+c. Calculating Ciara's posterior model
+```{r}
+summarize_beta_binomial(3, 10, 3, 7)
+```
+Therefore, the posterior model is $$ Beta(6, 14)$$ 
+
+The means in the simulation (0.29) is slight lower than the mean in the exact model (0.3). The exact calculation yields a slightly higher variability (0.01) than the simulation (0.0099). Overall, the simulation very closely approximates the exact model, however.
+
+d.  Calculating Taylor's posterior model
+```{r}
+summarize_beta_binomial(2, 0.1, 3, 7)
+```
+Therefore, the posterior model is $$ Beta(5, 4.1)$$ 
+
+The means in the simulation (0.53) is slight lower than the mean in the exact model (0.55). The exact calculation yields a slightly lower variability (0.157) than the simulation (0.16).
+
+## Exercise 4.7
+
+a. Potting the beta-binomial model
+```{r}
+plot_beta_binomial(1, 4, 8, 10)
+```
+
+The data has more influence on the posterior, since the posterior model more closely resembles the likelihood curve. We can see this in that the posterior takes more after the likelihood curve in shape, mean and mode.
+
+b. Potting the beta-binomial model
+```{r}
+plot_beta_binomial(20, 3, 0, 1)
+```
+
+The prior has more influence on the posterior, since the posterior model more closely resembles the prior curve. We can see this in that the posterior takes more after the prior curve in shape, mean and mode.
+
+c. Potting the beta-binomial model
+```{r}
+plot_beta_binomial(4, 2, 1, 3)
+```
+
+The prior has *slightly* more influence on the posterior, since the posterior model bears a slightly stronger resemblance to the prior curve. We can see this in that the posterior takes more after the prior curve in shape, though its mean and mode lay fairly equally between the likelihood and the prior.
+
+d. Potting the beta-binomial model
+```{r}
+plot_beta_binomial(3, 10, 10, 13)
+```
+
+The posterior is an equal compromise between the data and the prior. We can see this in that the posterior bears an equal resemblance to the prior and likelihood curves.
+
+e. Potting the beta-binomial model
+```{r}
+plot_beta_binomial(20, 2, 10, 200)
+```
+
+The data has more influence on the posterior, since the posterior model more closely resembles the likelihood curve. We can see this in that the posterior takes more after the likelihood curve in shape, mean and mode.
+
+## Exercise 4.8 
+I did this as a means to answer 4.7.
+
+## Exercise 4.9
+
+a. Beta(7, 2) is a right-skewed model, so some reasonable values for pi would be between 0.7 and 0.9.
+
+b. I would shift the average value of pi even higher, closer to 1. This would increase my estimated mean value, and decrease the amount of variability relative to that hypothesized in the Beta(7, 2) model.
+
+c. I would shift the average value of pi much lower, closer to 0. My estimated mean value would now fall within 0.2-0.4. This data would also slightly reduce the amount of variability relative to that hypothesized in the Beta(7, 2) model.
+
+d.  I would shift the average value of pi closer to 0.5. This data would also slightly decrease the amount of variability relative to that hypothesized in the Beta(7, 2) model.
+
+
+## Exercise 4.10
+
+a. We will use the following equation to solve for n and y: 
+$$ \pi | (Y=y) = Beta(\alpha + y, \beta +n - y)$$
+
+```{r}
+#prior alpha and beta
+a <- 0.5
+b <- 0.5
+
+#posterior alpha and beta
+a_1 <- 8.5
+b_1 <- 2.5
+
+y <- a_1 - a
+n <- b_1-b+y
+y
+n
+```
+
+Plotting the prior, likelihood and posterior models:
+```{r}
+plot_beta_binomial(0.5, 0.5, 8, 10)
+```
+
+
+b. We'll use the same equation as in part A.
+
+```{r}
+#prior alpha and beta
+a <- 0.5
+b <- 0.5
+
+#posterior alpha and beta
+a_1 <- 3.5
+b_1 <- 10.5
+
+y <- a_1 - a
+n <- b_1-b+y
+y
+n
+```
+
+Plotting the prior, likelihood and posterior models:
+```{r}
+plot_beta_binomial(0.5, 0.5, 3, 13)
+```
+
+c. We'll use the same equation as in part A.
+```{r}
+#prior alpha and beta
+a <- 10
+b <- 1
+
+#posterior alpha and beta
+a_1 <- 12
+b_1 <- 15
+
+y <- a_1 - a
+n <- b_1-b+y
+y
+n
+```
+
+Plotting the prior, likelihood and posterior models:
+```{r}
+plot_beta_binomial(10, 1, 2, 16)
+```
+
+d. We'll use the same equation as in part A.
+```{r}
+#prior alpha and beta
+a <- 8
+b <- 3
+
+#posterior alpha and beta
+a_1 <- 15
+b_1 <- 6
+
+y <- a_1 - a
+n <- b_1-b+y
+y
+n
+```
+
+Plotting the prior, likelihood and posterior models:
+```{r}
+plot_beta_binomial(8, 3, 7, 10)
+```
+
+e. We'll use the same equation as in part A.
+```{r}
+#prior alpha and beta
+a <- 2
+b <- 2
+
+#posterior alpha and beta
+a_1 <- 5
+b_1 <- 5
+
+y <- a_1 - a
+n <- b_1-b+y
+y
+n
+```
+
+Plotting the prior, likelihood and posterior models:
+```{r}
+plot_beta_binomial(2, 2, 3, 6)
+```
+
+f. We'll use the same equation as in part A.
+```{r}
+#prior alpha and beta
+a <- 1
+b <- 1
+
+#posterior alpha and beta
+a_1 <- 30
+b_1 <- 3
+
+y <- a_1 - a
+n <- b_1-b+y
+y
+n
+```
+
+Plotting the prior, likelihood and posterior models:
+```{r}
+plot_beta_binomial(1, 1, 29, 31)
+```
