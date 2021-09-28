@@ -395,3 +395,250 @@ Plotting the prior, likelihood and posterior models:
 ```{r}
 plot_beta_binomial(1, 1, 29, 31)
 ```
+
+## Exercise 4.11
+
+a. We will use the summarize_beta_binomial function to identify the posterior model
+```{r}
+summarize_beta_binomial(1, 1, 10, 13)
+```
+Therefore, the posterior model is
+$$Beta(11, 4)$$
+Now we will plot the prior, likelihood and posterior curves:
+```{r}
+plot_beta_binomial(1,1, 10, 13)
+```
+
+
+b. We will use the summarize_beta_binomial function to identify the posterior model
+```{r}
+summarize_beta_binomial(1, 1, 0, 1)
+```
+Therefore, the posterior model is
+$$Beta(1, 2)$$
+Now we will plot the prior, likelihood and posterior curves:
+```{r}
+plot_beta_binomial(1,1, 0, 1)
+```
+
+c. We will use the summarize_beta_binomial function to identify the posterior model
+```{r}
+summarize_beta_binomial(1, 1, 100, 130)
+```
+Therefore, the posterior model is
+$$Beta(101, 31)$$
+Now we will plot the prior, likelihood and posterior curves:
+```{r}
+plot_beta_binomial(1,1, 100, 130)
+```
+
+d. We will use the summarize_beta_binomial function to identify the posterior model
+```{r}
+summarize_beta_binomial(1, 1, 20, 120)
+```
+Therefore, the posterior model is
+$$Beta(21, 101)$$
+Now we will plot the prior, likelihood and posterior curves:
+```{r}
+plot_beta_binomial(1,1, 20, 120)
+```
+
+e. We will use the summarize_beta_binomial function to identify the posterior model
+```{r}
+summarize_beta_binomial(1, 1, 234, 468)
+```
+Therefore, the posterior model is
+$$Beta(235, 235)$$
+Now we will plot the prior, likelihood and posterior curves:
+```{r}
+plot_beta_binomial(1,1, 234, 468)
+```
+
+## Exercise 4.12
+
+a. We will use the summarize_beta_binomial function to identify the posterior model
+```{r}
+summarize_beta_binomial(10, 2, 10, 13)
+```
+Therefore, the posterior model is
+$$Beta(11, 4)$$
+Now we will plot the prior, likelihood and posterior curves:
+```{r}
+plot_beta_binomial(10, 2, 20, 5)
+```
+
+
+b. We will use the summarize_beta_binomial function to identify the posterior model
+```{r}
+summarize_beta_binomial(10, 2, 0, 1)
+```
+Therefore, the posterior model is
+$$Beta(1, 2)$$
+Now we will plot the prior, likelihood and posterior curves:
+```{r}
+plot_beta_binomial(10,2, 10, 3)
+```
+
+c. We will use the summarize_beta_binomial function to identify the posterior model
+```{r}
+summarize_beta_binomial(10, 2, 100, 130)
+```
+Therefore, the posterior model is
+$$Beta(101, 32)$$
+Now we will plot the prior, likelihood and posterior curves:
+```{r}
+plot_beta_binomial(10,2, 100, 130)
+```
+
+d. We will use the summarize_beta_binomial function to identify the posterior model
+```{r}
+summarize_beta_binomial(10, 2, 20, 120)
+```
+Therefore, the posterior model is
+$$Beta(30, 102)$$
+Now we will plot the prior, likelihood and posterior curves:
+```{r}
+plot_beta_binomial(10,2, 20, 120)
+```
+
+e. We will use the summarize_beta_binomial function to identify the posterior model
+```{r}
+summarize_beta_binomial(10, 2, 234, 468)
+```
+Therefore, the posterior model is
+$$Beta(244, 236)$$
+Now we will plot the prior, likelihood and posterior curves:
+```{r}
+plot_beta_binomial(10,2, 234, 468)
+```
+
+## Exercise 4.13
+
+a. Below is my sketch of the prior pdf.
+
+![caption](/Users/stephjordan/Downloads/IMG-1980.jpg)
+
+
+b. The politician's prior understanding of pi is that the probability of seeing a mean greater than 0.5 is 2, and the probability of seeing a mean less than 0.5 is 0. This doesn't really make sense to me...why is he restricting his probability of success to greater than 0.5 from the outset?
+
+c. We can construct the posterior pdf can be found by reference to the likelihood and prior values. Note: the posterior f(pi|y=0)=0 for pi<0.5. However, for pi>0.5, we have the following model:
+
+$$f(\pi|y=0) = f(\pi)*L(\pi|y=0)$$
+Plugging into this formula, we have:
+
+$$f(\pi|y=0) = 2*C(0, 100)*\pi^{0}*(1-\pi)^{100}$$
+Below is my sketch of the posterior pdf:
+![caption](/Users/stephjordan/Downloads/IMG-1981.jpg)
+
+d. The politician's posterior understanding reflects low and declining probabilities for 0.5<pi<1. This more accurately reflects the observed data, and thus merges the prior model and the likelihood function. The politician made a mistake in assuming the probability of an average approval rating below 50% (pi<0.5) was zero. This is reflected in the declining trend towards 0 of f(pi) as we approach 1. This means that the politician's approval rating was much lower than he hypothesized. 
+
+## Exercise 4.14
+
+a. Proof of equivalence: 
+![caption](/Users/stephjordan/Downloads/IMG-1987.jpg)
+
+
+b. As n increases, the posterior mode approaches zero. If we fix alpha, beta and y to equal 1, and allow n to vary from 1 to 10 to 100, we can see this trend:
+```{r}
+a <- 1
+b <- 1
+y <- 1
+n_0 <- 1
+n_1 <- 10
+n_2 <- 100
+
+
+posterior_mode1 <- (a+y-1)/(a+b+n_0-2)
+posterior_mode1
+posterior_mode2 <- (a+y-1)/(a+b+n_1-2)
+posterior_mode2
+posterior_mode3 <- (a+y-1)/(a+b+n_2-2)
+posterior_mode3
+```
+
+## Exercise 4.15
+
+a.  Since we observed 1 success and 0 failures, we add one to alpha and 0 to beta, producing the following posterior model:
+$$ Beta(3, 3)$$
+b. Since we observed 1 more success and 0 failures, we add one to alpha and 0 to beta, producing the following posterior model:
+$$ Beta(4, 3)$$
+c. Since we observed 0 more successes and 1 more failure, we add zero to alpha and 1 to beta, producing the following posterior model:
+$$ Beta(4, 4)$$
+d. Since we observed 1 more success and 0 more failures, we add one to alpha and 0 to beta, producing the following posterior model:
+$$ Beta(5, 4)$$
+## Exercise 4.16
+
+a. Since we observed 3 more successes and 2 more failures, we add 3 to alpha and 2 to beta, producing the following posterior model:
+$$ Beta(5, 5)$$
+b. Since we observed 1 success and 4 more failures, we add 1 to alpha and 4 to beta, producing the following posterior model:
+$$ Beta(6, 9)$$
+c. Since we observed 1 success and 4 more failures, we add 1 to alpha and 4 to beta, producing the following posterior model:
+$$ Beta(7, 13)$$
+d. Since we observed 2 successes and 3 more failures, we add 2 to alpha and 3 to beta, producing the following posterior model:
+$$ Beta(9, 16)$$
+
+## Exercise 4.17
+
+a. Plotting the prior model:
+```{r}
+plot_beta(4, 3)
+```
+The employees believe that an average of around 60% of people will click on the ad, with a moderate level of variance.
+
+b. Constructing the posterior models:
+
+For the first employee, with a sample size of one, and 0 successes and one failure, we can add 0 to alpha and 1 to beta, producing the following posterior model: 
+$$ Beta(4, 4)$$
+
+For the second employee, with a sample size of 10, and 3 successes and 7 failures, we can add 3 to alpha and 7 to beta, producing the following posterior model: 
+$$ Beta(7, 10)$$
+For the third employee, with a sample size of 100, and 20 successes and 80 failures, we can add 20 to alpha and 80 to beta, producing the following posterior model: 
+$$ Beta(24, 83)$$
+c. Plotting the prior, likelihood and posterior for the first employee:
+```{r}
+plot_beta_binomial(4, 3, 0, 1)
+```
+
+
+Plotting the prior, likelihood and posterior for the second employee:
+```{r}
+plot_beta_binomial(4, 3, 3, 10)
+```
+
+Plotting the prior, likelihood and posterior for the third employee:
+```{r}
+plot_beta_binomial(4, 3, 20, 100)
+```
+
+d. The first employee's posterior is almost exactly symmetrical, with a mean around 0.5 and a moderate level of variance. The second employee's posterior is still highly symmetrical, but with a slightly lower mean (close to 0.4), and a lower level of variance. The third employee's posterior is significantly lower (close to 0.2), with an even smaller level of variance (most values ranging from 0.125 to 0.375).
+
+## Exercise 4.18
+
+
+
+
+```{r}
+uniform_Plot <- function(a, b){
+  xvals <- data.frame(x = c(a, b)) #Range for x-values
+  
+  ggplot(data.frame(x = xvals), aes(x = x)) + xlim(c(a, b)) + ylim(0, 1/(b - a)) +
+    stat_function(fun = dunif, args = list(min = a, max = b), geom = "area", 
+                  fill = "green", alpha = 0.35) + 
+    stat_function(fun = dunif, args = list(min = a, max = b)) +
+    labs(x = "\n u", y = "f(u) \n", 
+         title = paste0("Uniform Distribution \n With Min = ", a, " & Max = ", b, " \n")) +
+    theme(plot.title = element_text(hjust = 0.5),
+          axis.title.x = element_text(face="bold", colour="blue", size = 12),
+          axis.title.y = element_text(face="bold", colour="blue", size = 12)) +
+    geom_vline(xintercept = a, linetype = "dashed", colour = "red") +
+    geom_vline(xintercept = b, linetype = "dashed", colour = "red")
+  
+}
+```
+
+```{r}
+uniform_Plot(a = 0.5, b = 1)
+```
+
+
+
