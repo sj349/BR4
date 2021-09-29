@@ -614,31 +614,116 @@ d. The first employee's posterior is almost exactly symmetrical, with a mean aro
 
 ## Exercise 4.18
 
+a.  At the end of day 1 we have: 
+$$ Beta(4, 4)$$
+At the end of day 2 we have:
+$$ Beta(7, 11)$$
+At the end of day 3 we have:
+$$ Beta(27, 91)$$
 
+b. Plotting the new employee's prior and 3 sequential posteriors:
 
-
+The prior:
 ```{r}
-uniform_Plot <- function(a, b){
-  xvals <- data.frame(x = c(a, b)) #Range for x-values
-  
-  ggplot(data.frame(x = xvals), aes(x = x)) + xlim(c(a, b)) + ylim(0, 1/(b - a)) +
-    stat_function(fun = dunif, args = list(min = a, max = b), geom = "area", 
-                  fill = "green", alpha = 0.35) + 
-    stat_function(fun = dunif, args = list(min = a, max = b)) +
-    labs(x = "\n u", y = "f(u) \n", 
-         title = paste0("Uniform Distribution \n With Min = ", a, " & Max = ", b, " \n")) +
-    theme(plot.title = element_text(hjust = 0.5),
-          axis.title.x = element_text(face="bold", colour="blue", size = 12),
-          axis.title.y = element_text(face="bold", colour="blue", size = 12)) +
-    geom_vline(xintercept = a, linetype = "dashed", colour = "red") +
-    geom_vline(xintercept = b, linetype = "dashed", colour = "red")
-  
-}
+plot_beta(4, 3)
 ```
 
+
+After day 1:
 ```{r}
-uniform_Plot(a = 0.5, b = 1)
+plot_beta(4, 4)
 ```
+
+After day 2:
+```{r}
+plot_beta(7, 11)
+```
+
+After day 3:
+```{r}
+plot_beta(27, 91)
+```
+
+The employee's understanding of pi shifted significantly leftward over the course of 3 days. The mean started 0.6, and ended up around 0.225 by day 3. 
+
+d. If the employee only updated their posterior at the end of day 3, they would have added the following data on 3: 23 successes, 88 failures. This produces the following posterior model: 
+
+$$Beta(27, 91)$$
+This is equivalent to the posterior model that the employee achieves on the third day in the sequential example.
+
+## Exercise 4.19
+
+Loading necessary data
+```{r}
+data(bechdel, package = "bayesrules")
+library(janitor)
+```
+Filtering for year==1980
+
+```{r}
+
+bechdel %>% 
+  filter(year == 1980) %>% 
+  tabyl(binary) %>% 
+  adorn_totals("row")
+```
+a. Constructing posterior for year=1980:
+$$Beta(5, 11)$$
+
+Calculating the posterior mean and mode:
+```{r}
+summarize_beta_binomial(1, 1, 4, 14)
+```
+
+b. Filtering for year==1990
+
+```{r}
+
+bechdel %>% 
+  filter(year == 1990) %>% 
+  tabyl(binary) %>% 
+  adorn_totals("row")
+```
+
+Constructing posterior:
+$$Beta(11, 20)$$
+
+Calculating the posterior mean and mode:
+```{r}
+summarize_beta_binomial(5, 11, 6, 15)
+```
+
+c. Filtering for year==2000
+
+```{r}
+
+bechdel %>% 
+  filter(year == 2000) %>% 
+  tabyl(binary) %>% 
+  adorn_totals("row")
+```
+
+Constructing posterior:
+$$Beta(40, 54)$$
+
+Calculating the posterior mean and mode:
+```{r}
+summarize_beta_binomial(11, 20, 29, 63)
+```
+d. If Jenna added the movies from 1980, 1990 and 2000 on day one, she would add: 39 successes,  53 failures. This produces the following posterior model: 
+
+$$Beta(40, 54)$$
+Calculating the posterior mean and mode:
+```{r}
+summarize_beta_binomial(1, 1, 39, 92)
+```
+
+This is equivalent to the posterior model that the John achieves on the third day in the sequential example.
+
+## Exercise 4.20
+
+This sequential updating of our parameter of interest under the frequentist model would not be possible, for the frequentist analysis considers the long-run relative probability of an event. Therefore, under the frequentist analysis we could not obtain the intermediate probabilities obtained after adding new data each day, but rather only the probability when we aggregate the data at the end of the time period. Bayesian analysis allows us to identify the relative plausability of an event, while frequentist restricts us to long-run relative probablities. 
+
 
 
 
