@@ -159,6 +159,7 @@ Plotting simulation results
 ```{r}
 ggplot(taylor_sim, aes(x = pi, y = y)) + 
   geom_point(aes(color = (y == 3)), size = 0.1)
+
 ```
 
 Filtering for only the data that matches our observed results
@@ -461,10 +462,10 @@ a. We will use the summarize_beta_binomial function to identify the posterior mo
 summarize_beta_binomial(10, 2, 10, 13)
 ```
 Therefore, the posterior model is
-$$Beta(11, 4)$$
+$$Beta(20, 5)$$
 Now we will plot the prior, likelihood and posterior curves:
 ```{r}
-plot_beta_binomial(10, 2, 20, 5)
+plot_beta_binomial(10, 2, 10, 13)
 ```
 
 
@@ -476,7 +477,7 @@ Therefore, the posterior model is
 $$Beta(1, 2)$$
 Now we will plot the prior, likelihood and posterior curves:
 ```{r}
-plot_beta_binomial(10,2, 10, 3)
+plot_beta_binomial(10,2, 0, 1)
 ```
 
 c. We will use the summarize_beta_binomial function to identify the posterior model
@@ -566,6 +567,7 @@ c. Since we observed 0 more successes and 1 more failure, we add zero to alpha a
 $$ Beta(4, 4)$$
 d. Since we observed 1 more success and 0 more failures, we add one to alpha and 0 to beta, producing the following posterior model:
 $$ Beta(5, 4)$$
+
 ## Exercise 4.16
 
 a. Since we observed 3 more successes and 2 more failures, we add 3 to alpha and 2 to beta, producing the following posterior model:
@@ -723,6 +725,18 @@ This is equivalent to the posterior model that the John achieves on the third da
 ## Exercise 4.20
 
 This sequential updating of our parameter of interest under the frequentist model would not be possible, for the frequentist analysis considers the long-run relative probability of an event. Therefore, under the frequentist analysis we could not obtain the intermediate probabilities obtained after adding new data each day, but rather only the probability when we aggregate the data at the end of the time period. Bayesian analysis allows us to identify the relative plausability of an event, while frequentist restricts us to long-run relative probablities. 
+
+
+```{r}
+
+
+quantile(rgamma(10000, shape=3, rate=1), c(0.1, 0.9))
+plot_gamma(3, 1)
+```
+
+
+
+
 
 
 
